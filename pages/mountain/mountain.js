@@ -37,7 +37,10 @@ export default class Mountain extends Component<Props> {
             <Text style={styles.welcome4}>Let's check today's goal</Text>
             <View style={{ paddingTop: 45, alignItems: "center" }}>
               <View>
-                <Button style={styles.button}>
+                <Button
+                  style={styles.button}
+                  onPress={() => this.props.navigation.navigate("GoalPage")}
+                >
                   <Text style={styles.buttonText}>YEAH!</Text>
                 </Button>
               </View>

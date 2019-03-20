@@ -12,6 +12,7 @@ import PainDescription from "./pain/painDescription";
 import BookingMap from "./booking/bookingMap";
 import TransitionMap from "./transition/transitionMap";
 import Mountain from "./mountain/mountain";
+import GoalPage from "./goalPage/goalPage";
 
 const RootStack = createStackNavigator(
   {
@@ -41,10 +42,13 @@ const RootStack = createStackNavigator(
     },
     Mountain: {
       screen: Mountain
+    },
+    GoalPage: {
+      screen: GoalPage
     }
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "TransitionMap",
     headerMode: "none",
     navigationOptions: {
       headerVisible: false
