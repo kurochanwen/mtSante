@@ -6,6 +6,8 @@ import {
 import HomeScreen from "./homePage/homePage";
 import SignUp from "./signUp/signUp";
 import SignUpForm from "./signUp/signUpForm";
+import GenderPage from "./genderPage/genderPage";
+import PainPage from "./pain/pain";
 
 const RootStack = createStackNavigator(
   {
@@ -17,10 +19,16 @@ const RootStack = createStackNavigator(
     },
     SignUpForm: {
       screen: SignUpForm
+    },
+    GenderPage: {
+      screen: GenderPage
+    },
+    PainPage: {
+      screen: PainPage
     }
   },
   {
-    initialRouteName: "SignUpForm",
+    initialRouteName: "PainPage",
     headerMode: "none",
     navigationOptions: {
       headerVisible: false

@@ -1,11 +1,19 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  ScrollView
+} from "react-native";
 import { Button } from "native-base";
+import bgImage from "../../assets/backgrounds/Mt.Sante-01.png";
 
 export default class HomeScreen extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
+        <ImageBackground style={styles.imageBackground} source={bgImage} />
         <View style={{ top: "-10%" }}>
           <Text style={styles.welcome}>Welcome to the Mt.Sante</Text>
           <Text style={styles.welcome2}>let's Start the Journey</Text>
@@ -29,11 +37,17 @@ export default class HomeScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  imageBackground: {
+    width: "100%",
+    height: 2000,
+    position: "absolute",
+    top: 0,
+    left: 0
+  },
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#90D0ED"
+    alignItems: "center"
   },
   welcome: {
     fontSize: 20,
@@ -50,7 +64,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     height: 40,
     paddingHorizontal: 80,
-    borderRadius: 25
+    borderRadius: 25,
+    opacity: 0.5
   },
   buttonText: {
     fontSize: 20,
@@ -60,6 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     height: 40,
     paddingHorizontal: 87,
-    borderRadius: 25
+    borderRadius: 25,
+    opacity: 0.5
   }
 });
