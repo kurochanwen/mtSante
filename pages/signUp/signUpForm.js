@@ -4,10 +4,12 @@ import {
   StyleSheet,
   ScrollView,
   Text,
-  ImageBackground
+  ImageBackground,
+  AsyncStorage
 } from "react-native";
 import _ from "lodash";
 import { Button } from "native-base";
+import { phoneHelpers, dateHelper } from "./phoneHelper";
 
 import t from "tcomb-form-native";
 
@@ -19,14 +21,41 @@ const Email = t.refinement(t.String, email => {
 });
 
 const User = t.struct({
-  name: t.String,
-  birthday: t.String,
-  height: t.Number,
-  weight: t.Number,
-  email: Email,
-  password: t.String,
-  confirm: t.String,
-  phoneNumber: t.String
+  firstName: t.String,
+  middleName: t.maybe(t.String),
+  lastName: t.String
+});
+const Birthday = t.struct({
+  birthday: t.maybe(t.String)
+});
+const Height = t.struct({
+  height: t.maybe(t.Number)
+});
+const Weight = t.struct({
+  weight: t.maybe(t.Number)
+});
+const Gender = t.struct({
+  gender: t.maybe(t.String)
+});
+const User2 = t.struct({
+  email: t.maybe(t.String),
+  password: t.maybe(t.String),
+  confirm: t.maybe(t.String),
+  phoneNumber: t.maybe(t.String)
+});
+
+const HealthCare = t.struct({
+  healthCardNumber: t.maybe(t.String),
+  UHIP_number: t.maybe(t.String),
+  other: t.maybe(t.String)
+});
+
+const FamilyDoctor = t.struct({
+  firstName: t.maybe(t.String),
+  middleName: t.maybe(t.String),
+  lastName: t.maybe(t.String),
+  contactNumber: t.maybe(t.String),
+  email: t.maybe(t.String)
 });
 
 const formStyles = {
@@ -48,40 +77,58 @@ const formStyles = {
   textboxView: {
     normal: {
       flex: 1,
-      paddingRight: 10
+      justifyContent: "center",
+      paddingRight: 10,
+      marginLeft: 10,
+      backgroundColor: "rgba(255,255,255,.5)",
+      height: 20,
+      padding: 7,
+      paddingVertical: 0,
+      borderRadius: 25,
+      marginBottom: 5
     },
     error: {
       flex: 1,
-      paddingRight: 10
+      paddingRight: 10,
+      borderColor: "#a94442",
+      borderWidth: 1,
+      backgroundColor: "rgba(255,255,255,.5)",
+      justifyContent: "center",
+      paddingRight: 10,
+      marginLeft: 10,
+      height: 20,
+      padding: 7,
+      paddingVertical: 0,
+      borderRadius: 25,
+      marginBottom: 5
+    },
+    notEditable: {
+      flex: 1,
+      justifyContent: "center",
+      paddingRight: 10,
+      marginLeft: 10,
+      backgroundColor: "rgba(255,255,255,.5)",
+      height: 20,
+      padding: 7,
+      paddingVertical: 0,
+      borderRadius: 25,
+      marginBottom: 5
     }
   },
   textbox: {
     normal: {
-      marginLeft: 10,
-      backgroundColor: "white",
-      color: "black",
-      fontSize: 14,
-      height: 20,
-      padding: 7,
-      paddingVertical: 0,
-      borderRadius: 25,
-      marginBottom: 5,
-      opacity: 0.5
+      color: "white",
+      fontSize: 16
+    },
+    notEditable: {
+      fontSize: 16,
+      color: "white"
     },
 
     // the style applied when a validation error occures
     error: {
-      marginLeft: 10,
-      backgroundColor: "white",
-      color: "black",
-      fontSize: 14,
-      height: 20,
-      padding: 7,
-      paddingVertical: 0,
-      borderRadius: 25,
-      borderColor: "#a94442", // <= relevant style here
-      borderWidth: 1,
-      marginBottom: 5
+      color: "white",
+      fontSize: 16
     }
   },
   controlLabel: {
@@ -100,9 +147,44 @@ const formStyles = {
     }
   }
 };
+const shortStyle = {
+  ...formStyles,
+  textboxView: {
+    normal: {
+      ...formStyles.textboxView.normal,
+      width: 110,
+      flex: 0
+    },
+    error: {
+      ...formStyles.textboxView.error,
+      width: 110,
+      flex: 0
+    },
+    notEditable: {
+      ...formStyles.textboxView.notEditable,
+      width: 110,
+      flex: 0
+    }
+  }
+};
+
 const options = {
   fields: {
-    birthday: {}
+    gender: {
+      editable: false
+    },
+    phoneNumber: {
+      placeholder: "(xxx) xxx - xxxx",
+      factory: t.form.Textbox,
+      transformer: phoneHelpers,
+      placeholderTextColor: "white"
+    },
+    contactNumber: {
+      placeholder: "(xxx) xxx - xxxx",
+      factory: t.form.Textbox,
+      transformer: phoneHelpers,
+      placeholderTextColor: "white"
+    }
   },
   i18n: {
     optional: "",
@@ -110,12 +192,80 @@ const options = {
   },
   stylesheet: formStyles
 };
+const optionShortStyle = {
+  ...options,
+  fields: {
+    ...options.fields,
+    birthday: {
+      placeholder: "yyyy/mm/dd",
+      factory: t.form.Textbox,
+      transformer: dateHelper,
+      placeholderTextColor: "white"
+    },
+    height: {
+      placeholder: "cm",
+      placeholderTextColor: "white"
+    },
+    weight: {
+      placeholder: "kg",
+      placeholderTextColor: "white"
+    }
+  },
+  stylesheet: shortStyle
+};
 
 export default class SignUpForm extends Component {
-  handleSubmit = () => {
-    const value = this._form.getValue();
-    console.log("value: ", value);
+  _storeData = async data => {
+    try {
+      await AsyncStorage.setItem("USERDATA", JSON.stringify(data));
+    } catch (error) {
+      console.warn(error);
+    }
   };
+  handleSubmit = () => {
+    const userValue = this._formUser.getValue();
+    const gender = this._formGender.getValue();
+    let data;
+    if (userValue && gender) {
+      data = {
+        firstName: userValue.firstName,
+        lastName: userValue.lastName,
+        gender: gender.gender
+      };
+      this._storeData(data);
+      this.props.navigation.navigate("PainPage");
+    }
+  };
+  renderAND = () => (
+    <View
+      style={{
+        justifyContent: "space-around",
+        flexDirection: "row",
+        marginTop: 40,
+        marginBottom: 40
+      }}
+    >
+      <View
+        style={{
+          top: -8.5,
+          borderBottomColor: "white",
+          borderBottomWidth: 2,
+          padding: 1,
+          paddingHorizontal: 70
+        }}
+      />
+      <Text style={{ padding: 0, color: "white" }}>AND</Text>
+      <View
+        style={{
+          top: -8.5,
+          borderBottomColor: "white",
+          borderBottomWidth: 2,
+          padding: 1,
+          paddingHorizontal: 70
+        }}
+      />
+    </View>
+  );
 
   render() {
     return (
@@ -127,44 +277,62 @@ export default class SignUpForm extends Component {
         <ScrollView>
           <View
             style={{
-              paddingTop: 80,
-              paddingVertical: 20,
-              paddingHorizontal: 20
+              paddingTop: 100
             }}
           >
-            <Text style={styles.welcome}>
+            <Text style={styles.welcome2}>
               Alright! Let's us get to know more about you
             </Text>
           </View>
-          <Form ref={c => (this._form = c)} type={User} options={options} />
+          <Form ref={c => (this._formUser = c)} type={User} options={options} />
+          <Form
+            ref={c => (this._formBday = c)}
+            type={Birthday}
+            options={optionShortStyle}
+          />
+          <Form
+            ref={c => (this._formGender = c)}
+            type={Gender}
+            options={optionShortStyle}
+            value={{ gender: this.props.navigation.state.params.gender }}
+          />
           <View
-            style={{
-              justifyContent: "space-around",
-              flexDirection: "row",
-              marginBottom: 40
-            }}
+            style={{ flexDirection: "row", justifyContent: "space-around" }}
           >
-            <View
-              style={{
-                top: -8.5,
-                borderBottomColor: "white",
-                borderBottomWidth: 2,
-                padding: 1,
-                paddingHorizontal: 70
-              }}
+            <Form
+              ref={c => (this._formHeight = c)}
+              type={Height}
+              options={optionShortStyle}
             />
-            <Text style={{ padding: 0, color: "white" }}>OR</Text>
-            <View
-              style={{
-                top: -8.5,
-                borderBottomColor: "white",
-                borderBottomWidth: 2,
-                padding: 1,
-                paddingHorizontal: 70
-              }}
+            <Form
+              ref={c => (this._formWidth = c)}
+              type={Weight}
+              options={optionShortStyle}
             />
           </View>
-
+          <Form
+            ref={c => (this._formUser2 = c)}
+            type={User2}
+            options={options}
+          />
+          {this.renderAND()}
+          <Text style={styles.welcome2}>
+            And a little bit about your healthcare information
+          </Text>
+          <Form
+            ref={c => (this._formHealth = c)}
+            type={HealthCare}
+            options={options}
+          />
+          {this.renderAND()}
+          <Text style={styles.welcome2}>
+            And your family doctors information
+          </Text>
+          <Form
+            ref={c => (this._formFDoc = c)}
+            type={FamilyDoctor}
+            options={options}
+          />
           <ScrollView contentContainerStyle={{ alignItems: "center" }}>
             <View>
               <Button style={styles.button} onPress={this.handleSubmit}>
@@ -200,14 +368,16 @@ const styles = StyleSheet.create({
   welcome2: {
     fontSize: 16,
     textAlign: "center",
-    color: "white"
+    color: "white",
+    marginBottom: 30
   },
   button: {
     backgroundColor: "#FFFFFF",
     height: 40,
     paddingHorizontal: 50,
     borderRadius: 25,
-    marginBottom: 30,
+    marginTop: 40,
+    marginBottom: 40,
     opacity: 0.5
   },
   buttonText: {

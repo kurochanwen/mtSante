@@ -11,6 +11,7 @@ import { Button } from "native-base";
 
 export default class GenderPage extends Component<Props> {
   state = {
+    transition: false,
     error: false,
     gender: "",
     didClick: false,
@@ -29,6 +30,7 @@ export default class GenderPage extends Component<Props> {
   handleOnClick = gender => {
     if (gender === "male") {
       this.setState({
+        gender,
         error: false,
         didClick: true,
         female: {
@@ -44,6 +46,7 @@ export default class GenderPage extends Component<Props> {
       });
     } else if (gender === "female") {
       this.setState({
+        gender,
         error: false,
         didClick: true,
         male: {
@@ -61,16 +64,48 @@ export default class GenderPage extends Component<Props> {
   };
   handleNextButton = () => {
     if (this.state.didClick) {
-      this.props.navigation.navigate("SignUpForm");
+      this.setState({ transition: true });
     } else {
       this.setState({ error: true });
     }
   };
-
-  render() {
+  handleTransition = () => {
+    if (!this.state.transition) {
+      return this.renderGender();
+    } else {
+      return this.nextScreen();
+    }
+  };
+  nextScreen = () => (
+    <>
+      <ImageBackground
+        style={styles.imageBackground}
+        source={require("../../assets/backgrounds/Mt.Sante-01.png")}
+      />
+      <View style={{}}>
+        <Text style={styles.welcome}>All Set!</Text>
+        <Text style={styles.welcome2}>
+          Alright! Let's us know more about you
+        </Text>
+      </View>
+      <View style={{ top: "10%" }}>
+        <Button
+          style={styles.button}
+          onPress={() =>
+            this.props.navigation.navigate("SignUpForm", {
+              gender: this.state.gender
+            })
+          }
+        >
+          <Text style={styles.buttonText}>Next</Text>
+        </Button>
+      </View>
+    </>
+  );
+  renderGender = () => {
     const { male, female } = this.state;
     return (
-      <View style={styles.container}>
+      <>
         <ImageBackground
           style={styles.imageBackground}
           source={require("../../assets/backgrounds/Mt.Sante-01.png")}
@@ -130,8 +165,12 @@ export default class GenderPage extends Component<Props> {
             <Text style={styles.buttonText}>Next</Text>
           </Button>
         </View>
-      </View>
+      </>
     );
+  };
+
+  render() {
+    return <View style={styles.container}>{this.handleTransition()}</View>;
   }
 }
 
@@ -173,6 +212,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     height: 40,
     paddingHorizontal: 50,
+    borderRadius: 25,
+    opacity: 0.5
+  },
+  button: {
+    backgroundColor: "#FFFFFF",
+    height: 40,
+    paddingHorizontal: 38,
     borderRadius: 25,
     opacity: 0.5
   },

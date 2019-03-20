@@ -11,6 +11,7 @@ import { Button } from "native-base";
 
 export default class PainMale extends Component<Props> {
   state = {
+    clicked: false,
     pain: {
       frontRightShoulder: 0,
       frontLeftShoulder: "",
@@ -42,7 +43,11 @@ export default class PainMale extends Component<Props> {
     painColor: ""
   };
 
-  handleOnClick = gender => {};
+  handleOnClick = () => {
+    if (this.state.clicked) {
+      this.props.navigation.navigate("PainDescription");
+    }
+  };
 
   handleSelectColor = selected => {
     let painSelect = {
@@ -239,7 +244,7 @@ export default class PainMale extends Component<Props> {
         </View>
         <View style={{ alignItems: "center" }}>
           <View>
-            <Button style={styles.button}>
+            <Button style={styles.button} onPress={() => this.handleOnClick()}>
               <Text style={styles.buttonText}>All Done</Text>
             </Button>
           </View>
@@ -250,11 +255,12 @@ export default class PainMale extends Component<Props> {
             ...styles.painCircle,
             position: "absolute",
             top: 250,
-            left: 50,
+            left: 55,
             backgroundColor: pain.frontRightShoulder || "rgba(0,0,0,0)"
           }}
           onPress={() => {
             this.setState(prevState => ({
+              clicked: true,
               pain: {
                 ...prevState.pain,
                 frontRightShoulder: this.state.painColor
@@ -267,11 +273,12 @@ export default class PainMale extends Component<Props> {
             ...styles.painCircle,
             position: "absolute",
             top: 250,
-            left: 125,
+            left: 120,
             backgroundColor: pain.frontLeftShoulder || "rgba(0,0,0,0)"
           }}
           onPress={() => {
             this.setState(prevState => ({
+              clicked: true,
               pain: {
                 ...prevState.pain,
                 frontLeftShoulder: this.state.painColor
@@ -284,11 +291,12 @@ export default class PainMale extends Component<Props> {
             ...styles.painCircle,
             position: "absolute",
             top: 450,
-            left: 68,
+            left: 70,
             backgroundColor: pain.frontRightKnee || "rgba(0,0,0,0)"
           }}
           onPress={() => {
             this.setState(prevState => ({
+              clicked: true,
               pain: {
                 ...prevState.pain,
                 frontRightKnee: this.state.painColor
@@ -301,11 +309,12 @@ export default class PainMale extends Component<Props> {
             ...styles.painCircle,
             position: "absolute",
             top: 450,
-            left: 104,
+            left: 105,
             backgroundColor: pain.frontLeftKnee || "rgba(0,0,0,0)"
           }}
           onPress={() => {
             this.setState(prevState => ({
+              clicked: true,
               pain: {
                 ...prevState.pain,
                 frontLeftKnee: this.state.painColor
@@ -318,11 +327,12 @@ export default class PainMale extends Component<Props> {
             ...styles.painCircle,
             position: "absolute",
             top: 250,
-            right: 45,
+            right: 50,
             backgroundColor: pain.backRightShoulder || "rgba(0,0,0,0)"
           }}
           onPress={() => {
             this.setState(prevState => ({
+              clicked: true,
               pain: {
                 ...prevState.pain,
                 backRightShoulder: this.state.painColor
@@ -340,6 +350,7 @@ export default class PainMale extends Component<Props> {
           }}
           onPress={() => {
             this.setState(prevState => ({
+              clicked: true,
               pain: {
                 ...prevState.pain,
                 backLeftShoulder: this.state.painColor
@@ -357,6 +368,7 @@ export default class PainMale extends Component<Props> {
           }}
           onPress={() => {
             this.setState(prevState => ({
+              clicked: true,
               pain: {
                 ...prevState.pain,
                 backRightKnee: this.state.painColor
@@ -369,11 +381,12 @@ export default class PainMale extends Component<Props> {
             ...styles.painCircle,
             position: "absolute",
             top: 450,
-            right: 106,
+            right: 105,
             backgroundColor: pain.backLeftKnee || "rgba(0,0,0,0)"
           }}
           onPress={() => {
             this.setState(prevState => ({
+              clicked: true,
               pain: {
                 ...prevState.pain,
                 backLeftKnee: this.state.painColor
