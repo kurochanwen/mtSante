@@ -48,7 +48,7 @@ const RootStack = createStackNavigator(
     }
   },
   {
-    initialRouteName: "TransitionMap",
+    initialRouteName: "Home",
     headerMode: "none",
     navigationOptions: {
       headerVisible: false
