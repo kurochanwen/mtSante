@@ -6,9 +6,37 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
-  ScrollView
+  ScrollView,
+  AsyncStorage
 } from "react-native";
 import { Button } from "native-base";
+import Carousel from "react-native-snap-carousel";
+
+const persons = [
+  {
+    name: "Aaron Fitzgerald",
+    position: "Orthopedic physical therapist",
+    comments: "19",
+    speciality:
+      "injury or illness that affets your bones, joints, muscle, tendons, or ligaments",
+    picture: require("../../assets/stock-photo/maleS.png")
+  },
+  {
+    name: "Olivia Calson",
+    position: "Physiotherapist",
+    comments: "13",
+    speciality: "orthopaedics and sports rehabilitation",
+    picture: require("../../assets/stock-photo/OliviaS.png")
+  },
+  {
+    name: "Carla Donovan",
+    position: "Geriatric Physical therapist",
+    comments: "32",
+    speciality:
+      "Arthritis, osteoporosis, Alzheimer's disease, and joint soreness for elderly patients",
+    picture: require("../../assets/stock-photo/CarlaS.png")
+  }
+];
 
 export default class BookingMap extends Component<Props> {
   state = {
@@ -16,7 +44,8 @@ export default class BookingMap extends Component<Props> {
     pageOpacity: 1,
     opacity: 1,
     selected: "",
-    page: 1
+    page: 1,
+    description: 1
   };
 
   handleRenders = () => {
@@ -63,12 +92,30 @@ export default class BookingMap extends Component<Props> {
     </View>
   );
 
+  _storeData = async data => {
+    try {
+      await AsyncStorage.setItem("THERAPIST", JSON.stringify(data));
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
+  handleChangePage = () => {
+    let data = {
+      therapist: persons[this.state.description].name,
+      therapistPicture: persons[this.state.description].picture
+    };
+
+    this._storeData(data);
+    this.props.navigation.navigate("TransitionAgenda");
+  };
+
   renderAgenda = () => (
     <View
       style={{
         position: "absolute",
-        left: 40,
-        top: 90
+        left: 42,
+        top: 40
       }}
     >
       <Image
@@ -125,7 +172,7 @@ export default class BookingMap extends Component<Props> {
               borderRadius: 25,
               textAlign: "center"
             }}
-            onPress={() => this.props.navigation.navigate("TransitionMap")}
+            onPress={() => this.handleChangePage()}
           >
             <Text style={{ fontSize: 10, color: "rgba(127,130,132,1)" }}>
               Book
@@ -135,171 +182,118 @@ export default class BookingMap extends Component<Props> {
       </View>
     </View>
   );
+
+  _renderItem = ({ item, index }) => {
+    return (
+      <View>
+        <Image
+          source={item.picture}
+          style={{ height: 150, width: 150, borderRadius: 10 }}
+        />
+      </View>
+    );
+  };
+
   renderPersonel = () => (
-    <ScrollView>
+    <View>
       <View style={{ opacity: this.state.pageOpacity }}>
         <ImageBackground
           style={styles.imageBackground}
           source={require("../../assets/backgrounds/Mt.Sante-01.png")}
         />
-        <View
-          style={{
-            paddingTop: 80,
-            paddingBottom: 16.5,
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            height: 33
-          }}
-        >
-          <View
-            style={{
-              height: 33,
-              width: "50%",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "rgba(255,255,255,.6)"
-            }}
-          >
-            <Text style={styles.buttonText}>Therapist</Text>
-          </View>
-          <View
-            style={{
-              height: 33,
-              width: "50%",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "rgba(255,255,255,.3)"
-            }}
-          >
-            <Text style={styles.buttonText}>Time</Text>
-          </View>
-        </View>
+
         <View
           style={{
             width: "100%",
-            height: 800,
+            height: "100%",
             backgroundColor: "rgba(255,255,255,.6)"
           }}
         >
-          <View style={{ marginTop: 60, flexDirection: "row", right: 7 }}>
-            <View>
-              <Image
-                style={{ ...styles.headshot, opacity: this.state.opacity }}
-                source={require("../../assets/stock-photo/1.jpg")}
-              />
-              {this.state.personel && (
-                <View style={{ alignItems: "center" }}>
-                  <Text style={{ ...styles.buttonText, marginTop: 5 }}>
-                    Kevin Okamura
-                  </Text>
-                  <Text
-                    style={{
-                      ...styles.smallerText,
-                      textDecorationLine: "underline",
-                      marginBottom: 5
-                    }}
-                  >
-                    Physiotherapist
-                  </Text>
-                  {this.renderStars()}
-                </View>
-              )}
-            </View>
-            <TouchableOpacity
-              onPress={() => this.setState({ personel: false, opacity: 0.5 })}
-            >
-              <Image
-                style={{ ...styles.headshot, marginHorizontal: 15 }}
-                source={require("../../assets/stock-photo/3.jpeg")}
-              />
-              <View style={{ alignItems: "center" }}>
-                <Text style={{ ...styles.buttonText, marginTop: 5 }}>
-                  Dana Parsley
-                </Text>
-                <Text
-                  style={{
-                    ...styles.smallerText,
-                    textDecorationLine: "underline",
-                    marginBottom: 5
-                  }}
-                >
-                  Physiotherapist
-                </Text>
-                {this.renderStars()}
-                {!this.state.personel && (
-                  <Text
-                    style={{
-                      ...styles.smallerText,
-                      textDecorationLine: "underline"
-                    }}
-                  >
-                    13 comments
-                  </Text>
-                )}
-              </View>
-            </TouchableOpacity>
-
-            <View>
-              <Image
-                style={{ ...styles.headshot, opacity: this.state.opacity }}
-                source={require("../../assets/stock-photo/2.jpeg")}
-              />
-              {this.state.personel && (
-                <View style={{ alignItems: "center" }}>
-                  <Text style={{ ...styles.buttonText, marginTop: 5 }}>
-                    Claire McGlynn
-                  </Text>
-                  <Text
-                    style={{
-                      ...styles.smallerText,
-                      textDecorationLine: "underline",
-                      marginBottom: 5
-                    }}
-                  >
-                    Physiotherapist
-                  </Text>
-                  {this.renderStars()}
-                </View>
-              )}
-            </View>
-          </View>
-          {!this.state.personel && (
-            <View style={{ ...styles.propertyContainer, marginLeft: 40 }}>
-              <Text style={{ ...styles.buttonText }}>Speciality</Text>
+          <View style={{ marginTop: 60, alignItems: "center" }}>
+            <Carousel
+              data={persons}
+              renderItem={this._renderItem}
+              sliderWidth={420}
+              itemWidth={150}
+              firstItem={1}
+              inactiveSlideScale={0.8}
+              inactiveSlideOpacity={1}
+              onSnapToItem={slideIndex =>
+                this.setState({ description: slideIndex })
+              }
+            />
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ ...styles.buttonText, marginTop: 5 }}>
+                {persons[this.state.description].name}
+              </Text>
               <Text
                 style={{
                   ...styles.smallerText,
                   textDecorationLine: "underline",
-                  marginLeft: 30
+                  marginBottom: 5
+                }}
+              />
+              {this.renderStars()}
+              <Text
+                style={{
+                  ...styles.smallerText,
+                  textDecorationLine: "underline"
                 }}
               >
-                orthopeadics and sports rehabilitation
+                {persons[this.state.description].comments} comments
               </Text>
             </View>
-          )}
-          <View style={{ position: "absolute", bottom: 10, left: 38 }}>
+          </View>
+
+          <View
+            style={{
+              ...styles.propertyContainer,
+              marginLeft: 40
+            }}
+          >
+            <Text style={{ ...styles.buttonText }}>Speciality</Text>
+            <Text
+              style={{
+                ...styles.smallerText,
+                textDecorationLine: "underline",
+                marginLeft: 30,
+                width: 220
+              }}
+            >
+              {persons[this.state.description].speciality}
+            </Text>
+          </View>
+
+          <View style={{ position: "absolute", bottom: 45, marginLeft: 40 }}>
             <Text
               style={{
                 ...styles.buttonText,
-                marginBottom: 10
+                marginBottom: 15
               }}
             >
               Check Schedule
             </Text>
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <Image
-                style={{ height: 300, width: 300, marginBottom: 60 }}
+                style={{
+                  height: 300,
+                  width: 300,
+                  marginBottom: 20,
+                  borderRadius: 10
+                }}
                 source={require("../../assets/stock-photo/calendar1.jpg")}
-                resizeMode={"contain"}
               />
             </View>
 
             <View style={{ alignItems: "center" }}>
               <View>
                 <Button
-                  style={styles.button}
-                  onPress={() => this.setState({ pageOpacity: 0.6 })}
+                  style={{ ...styles.button }}
+                  onPress={() =>
+                    this.state.selected
+                      ? this.setState({ pageOpacity: 0.6 })
+                      : null
+                  }
                 >
                   <Text style={styles.buttonText}>Confirm</Text>
                 </Button>
@@ -313,20 +307,19 @@ export default class BookingMap extends Component<Props> {
               height: 30,
               width: 30,
               borderRadius: 25,
-              bottom: 185,
-              left: 173
+              bottom: 125,
+              left: 175
             }}
             onPress={() => {
-              if (!this.state.personel)
-                this.setState({
-                  selected: "rgba(146,208,236,.6)"
-                });
+              this.setState({
+                selected: "rgba(146,208,236,.6)"
+              });
             }}
           />
         </View>
       </View>
-      {this.state.pageOpacity === 0.6 && this.renderAgenda()}
-    </ScrollView>
+      {this.state.pageOpacity === 0.6 ? this.renderAgenda() : null}
+    </View>
   );
 
   renderLocation = () => (
@@ -346,15 +339,13 @@ export default class BookingMap extends Component<Props> {
         <View style={{ alignItems: "center" }}>
           <Image
             style={{
-              width: 218,
-              height: 60,
-              marginTop: 55,
-              marginBottom: 30
+              width: 376,
+              height: 170
             }}
-            source={require("../../assets/Icons/logo-awp-dark.png")}
+            source={require("../../assets/Icons/sgphead.png")}
           />
         </View>
-        <View style={{ marginTop: 10, flexDirection: "row" }}>
+        <View style={{ flexDirection: "row" }}>
           <View>
             <Image
               style={styles.headshot}
@@ -625,13 +616,11 @@ export default class BookingMap extends Component<Props> {
         >
           <Image
             style={{
-              width: 111,
-              height: 42,
-              backgroundColor: "white",
+              width: 90,
+              height: 40,
               borderRadius: 20
             }}
-            source={require("../../assets/Icons/logo-awp-dark.png")}
-            resizeMode={"contain"}
+            source={require("../../assets/Icons/sgpmap.png")}
           />
         </TouchableOpacity>
       </View>
@@ -710,12 +699,9 @@ const styles = StyleSheet.create({
     height: 120
   },
   location: {
-    width: 111,
-    height: 42,
     position: "absolute",
     top: 540,
-    left: 30,
-    borderRadius: 20
+    left: 20
   },
   container: {
     position: "relative",

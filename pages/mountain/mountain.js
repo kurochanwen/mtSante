@@ -15,6 +15,31 @@ export default class Mountain extends Component<Props> {
     blur: 0,
     page: 1
   };
+  componentDidMount = () => {
+    setTimeout(() => {
+      this._ScrollView.scrollToEnd({ animated: true });
+    }, 2000);
+    setTimeout(() => {
+      this.setState({ page: 2 });
+    }, 4200);
+  };
+  renderTopMenu = () => (
+    <>
+      <TouchableOpacity
+        style={{ position: "absolute", top: 450, left: 20 }}
+        onPress={() => this.props.navigation.toggleDrawer()}
+      >
+        <Image
+          source={require("../../assets/ver5/menu.png")}
+          style={{
+            height: 25,
+            width: 25,
+            zIndex: 999
+          }}
+        />
+      </TouchableOpacity>
+    </>
+  );
   handlePage = () => {
     switch (this.state.page) {
       case 1:
@@ -35,51 +60,32 @@ export default class Mountain extends Component<Props> {
           <View style={styles.centerContainer}>
             <Text style={styles.welcome3}>Alright</Text>
             <Text style={styles.welcome4}>Let's check today's goal</Text>
-            <View style={{ paddingTop: 45, alignItems: "center" }}>
-              <View>
-                <Button
-                  style={styles.button}
-                  onPress={() => this.props.navigation.navigate("GoalPage")}
-                >
-                  <Text style={styles.buttonText}>YEAH!</Text>
-                </Button>
-              </View>
-              <Text
-                style={{ ...styles.welcome4, textDecorationLine: "underline" }}
-              >
-                Maybe later
-              </Text>
-            </View>
           </View>
         </View>
       </View>
     </>
   );
-  renderWelcome = () => (
-    <>
-      <TouchableOpacity
-        style={{ height: 1200, alignItems: "center" }}
-        onPress={() => this.setState({ page: 2 })}
-      >
-        <Text style={{ ...styles.welcome, paddingTop: 180 }}>
-          Welcome to Mt.Sante
-        </Text>
-      </TouchableOpacity>
-    </>
-  );
+  renderWelcome = () => {
+    return (
+      <>
+        <TouchableOpacity
+          style={{ height: 1200, alignItems: "center" }}
+          onPress={() => this.setState({ page: 2 })}
+        >
+          <Text style={{ ...styles.welcome, marginTop: 500 }}>
+            Welcome to Mt.Sante
+          </Text>
+        </TouchableOpacity>
+      </>
+    );
+  };
+
   renderFollowUp = () => (
     <>
-      <TouchableOpacity
-        style={{ height: 1200, alignItems: "center" }}
-        onPress={() => {
-          this.setState({ page: 3 }, () =>
-            this._ScrollView.scrollToEnd({ animated: true })
-          );
-        }}
-      >
+      <View style={{ height: 1200, alignItems: "center" }}>
         <View
           style={{
-            paddingTop: 180,
+            marginTop: 500,
             flexDirection: "row",
             alignItems: "center"
           }}
@@ -107,7 +113,28 @@ export default class Mountain extends Component<Props> {
         </View>
         <Text style={styles.text}>Mt.Sante by taking little steps</Text>
         <Text style={styles.text}>everyday.</Text>
-      </TouchableOpacity>
+        <View style={{ marginTop: 400, alignItems: "center" }}>
+          <View>
+            <Button
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate("Tabs")}
+            >
+              <Text style={styles.buttonText}>Start today's journey</Text>
+            </Button>
+          </View>
+          <TouchableOpacity onPress={() => this.setState({ page: 1 })}>
+            <Text
+              style={{
+                ...styles.welcome4,
+                textDecorationLine: "underline",
+                color: "#FFFFFF"
+              }}
+            >
+              Back
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </>
   );
   render() {
@@ -117,7 +144,6 @@ export default class Mountain extends Component<Props> {
           <ImageBackground
             style={styles.imageBackground}
             source={require("../../assets/backgrounds/Mt.Sante-01.png")}
-            blurRadius={this.state.blur}
           />
           <Image
             style={{
@@ -130,7 +156,9 @@ export default class Mountain extends Component<Props> {
             source={require("../../assets/human-figures/Mt.Sante-02shaw.png")}
             blurRadius={this.state.blur}
           />
+
           {this.handlePage()}
+          {this.renderTopMenu()}
         </ScrollView>
       </View>
     );
@@ -185,7 +213,7 @@ const styles = StyleSheet.create({
     color: "rgba(131,134,137,1)"
   },
   button: {
-    backgroundColor: "rgba(255,255,255,.5)",
+    backgroundColor: "rgba(255,255,255,.9)",
     height: 40,
     paddingHorizontal: 35,
     borderRadius: 25

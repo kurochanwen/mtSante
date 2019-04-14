@@ -5,7 +5,8 @@ import {
   ScrollView,
   Text,
   ImageBackground,
-  AsyncStorage
+  AsyncStorage,
+  Image
 } from "react-native";
 import _ from "lodash";
 import { Button } from "native-base";
@@ -172,37 +173,38 @@ export default class PainDescription extends Component {
     }
   };
   transitionPage = () => (
-    <>
-      <ImageBackground
-        style={styles.imageBackground}
-        source={require("../../assets/backgrounds/Mt.Sante-01.png")}
-      />
-      <View style={{ alignItems: "center" }}>
-        <View style={styles.centerContainer}>
-          <Text style={styles.welcome3}>All right!</Text>
-          <Text style={styles.welcome4}>It's time to book the appointment</Text>
-          <View style={{ paddingTop: 45, alignItems: "center" }}>
-            <View>
-              <Button
-                style={styles.button1}
-                onPress={() => this.props.navigation.navigate("BookingMap")}
-              >
-                <Text style={styles.buttonText}>Yes</Text>
-              </Button>
-            </View>
+    <View style={{ alignItems: "center" }}>
+      <View style={styles.centerContainer}>
+        <View style={{ alignItems: "center" }}>
+          <Image
+            style={styles.icon}
+            source={require("../../assets/Icons/appointment.png")}
+          />
+        </View>
+        <Text style={styles.welcome1}>All right!</Text>
+        <Text style={styles.welcome2}>
+          it's time to book your first appointment!
+        </Text>
+        <View style={{ alignItems: "center" }}>
+          <View style={{ paddingTop: "20%" }}>
+            <Button
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate("BookingMap")}
+            >
+              <Text style={styles.buttonText}>Yes</Text>
+            </Button>
           </View>
         </View>
       </View>
-    </>
+      <View>
+        <Text style={styles.underText}>Not now</Text>
+      </View>
+    </View>
   );
   renderForm = () => (
     <>
-      <ImageBackground
-        style={styles.imageBackground}
-        source={require("../../assets/backgrounds/Mt.Sante-01.png")}
-      />
       <View style={{}}>
-        <Text style={styles.welcome2}>Let's get more detailed now</Text>
+        <Text style={styles.welcome}>Let's get more detailed now</Text>
       </View>
       <Form
         ref={c => (this._formDescription = c)}
@@ -223,7 +225,15 @@ export default class PainDescription extends Component {
     </>
   );
   render() {
-    return <View style={styles.container}>{this.handleTransition()}</View>;
+    return (
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.imageBackground}
+          source={require("../../assets/backgrounds/Mt.Sante-01.png")}
+        />
+        {this.handleTransition()}
+      </View>
+    );
   }
 }
 
@@ -236,59 +246,53 @@ const styles = StyleSheet.create({
     left: 0
   },
   container: {
-    flex: 1
-  },
-  centerContainer: {
-    marginTop: "60%",
-    height: 260,
-    width: 206,
-    backgroundColor: "rgba(255,255,255,.15)",
-    borderRadius: 35
-  },
-  button1: {
-    backgroundColor: "#FFFFFF",
-    height: 40,
-    paddingHorizontal: 30,
-    borderRadius: 25,
-
-    opacity: 0.5
-  },
-  welcome3: {
-    marginTop: 45,
-    fontSize: 16,
-    textAlign: "center",
-    color: "white"
-  },
-  welcome4: {
-    marginTop: 20,
-    fontSize: 16,
-    textAlign: "center",
-    color: "white"
+    flex: 1,
+    justifyContent: "center"
   },
   welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    marginBottom: 15,
-    color: "white"
-  },
-  welcome2: {
     fontSize: 16,
     textAlign: "center",
     color: "white",
-    marginTop: 90,
     marginBottom: 50
+  },
+  centerContainer: {
+    height: 300,
+    width: 250,
+    paddingTop: 10,
+    paddingHorizontal: 25,
+    backgroundColor: "rgba(255,255,255,.7)",
+    borderRadius: 35
+  },
+  welcome1: {
+    fontSize: 16,
+    textAlign: "left",
+    marginVertical: 15,
+    color: "#666666"
+  },
+  welcome2: {
+    fontSize: 16,
+    textAlign: "left",
+    color: "#666666"
+  },
+  icon: {
+    marginVertical: 10,
+    height: 80,
+    width: 80
+  },
+  underText: {
+    paddingTop: 20,
+    fontSize: 16,
+    color: "white",
+    textDecorationLine: "underline"
+  },
+  buttonText: {
+    fontSize: 16
   },
   button: {
     backgroundColor: "#FFFFFF",
     height: 40,
-    paddingHorizontal: 50,
+    paddingHorizontal: 38,
     borderRadius: 25,
-    marginTop: 40,
-    marginBottom: 40,
     opacity: 0.5
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "200"
   }
 });

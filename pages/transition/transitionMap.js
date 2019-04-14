@@ -29,7 +29,10 @@ export default class TransitionMap extends Component<Props> {
 
           <View style={{ paddingTop: 40, alignItems: "center" }}>
             <View>
-              <Button style={styles.button1}>
+              <Button
+                style={styles.button1}
+                onPress={() => this.props.navigation.navigate("Review")}
+              >
                 <Text style={styles.buttonText}>Leave a review</Text>
               </Button>
             </View>

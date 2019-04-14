@@ -64,52 +64,18 @@ export default class GenderPage extends Component<Props> {
   };
   handleNextButton = () => {
     if (this.state.didClick) {
-      this.setState({ transition: true });
+      this.props.navigation.navigate("SignUpForm", {
+        gender: this.state.gender
+      });
     } else {
       this.setState({ error: true });
     }
   };
-  handleTransition = () => {
-    if (!this.state.transition) {
-      return this.renderGender();
-    } else {
-      return this.nextScreen();
-    }
-  };
-  nextScreen = () => (
-    <>
-      <ImageBackground
-        style={styles.imageBackground}
-        source={require("../../assets/backgrounds/Mt.Sante-01.png")}
-      />
-      <View style={{}}>
-        <Text style={styles.welcome}>All Set!</Text>
-        <Text style={styles.welcome2}>
-          Alright! Let's us know more about you
-        </Text>
-      </View>
-      <View style={{ top: "10%" }}>
-        <Button
-          style={styles.button}
-          onPress={() =>
-            this.props.navigation.navigate("SignUpForm", {
-              gender: this.state.gender
-            })
-          }
-        >
-          <Text style={styles.buttonText}>Next</Text>
-        </Button>
-      </View>
-    </>
-  );
+
   renderGender = () => {
     const { male, female } = this.state;
     return (
       <>
-        <ImageBackground
-          style={styles.imageBackground}
-          source={require("../../assets/backgrounds/Mt.Sante-01.png")}
-        />
         <View style={{ top: -20 }}>
           <Text style={styles.welcome}>
             Please select a charter base on your gender
@@ -170,7 +136,15 @@ export default class GenderPage extends Component<Props> {
   };
 
   render() {
-    return <View style={styles.container}>{this.handleTransition()}</View>;
+    return (
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.imageBackground}
+          source={require("../../assets/backgrounds/Mt.Sante-01.png")}
+        />
+        {this.renderGender()}
+      </View>
+    );
   }
 }
 
@@ -187,16 +161,37 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  centerContainer: {
+    height: 300,
+    width: 250,
+    paddingTop: 10,
+    paddingHorizontal: 25,
+    backgroundColor: "rgba(255,255,255,.7)",
+    borderRadius: 35
+  },
   welcome: {
     fontSize: 16,
     textAlign: "center",
     marginBottom: 15,
     color: "white"
   },
+  welcome1: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 15,
+    color: "#666666",
+    paddingBottom: 100
+  },
   welcome2: {
     fontSize: 16,
     textAlign: "center",
-    color: "white"
+    color: "#666666"
+  },
+  underText: {
+    paddingTop: 20,
+    fontSize: 16,
+    color: "white",
+    textDecorationLine: "underline"
   },
   buttonSignUp: {
     backgroundColor: "#FFFFFF",
@@ -205,8 +200,7 @@ const styles = StyleSheet.create({
     borderRadius: 25
   },
   buttonText: {
-    fontSize: 20,
-    fontWeight: "200"
+    fontSize: 16
   },
   buttonLogin: {
     backgroundColor: "#FFFFFF",

@@ -160,6 +160,7 @@ export default class PainFemale extends Component<Props> {
         </View>
         <View
           style={{
+            zIndex: 10,
             top: 70,
             flexDirection: "row",
             justifyContent: "space-evenly",
@@ -395,6 +396,34 @@ export default class PainFemale extends Component<Props> {
             }));
           }}
         />
+        {this.state.painColor ? (
+          <></>
+        ) : (
+          <>
+            <Image
+              style={{
+                position: "absolute",
+                top: -220,
+                left: -75,
+                width: "140%",
+                height: "140%",
+                opacity: 0.6
+              }}
+              source={require("../../assets/Icons/mask.png")}
+            />
+            <Text
+              style={{
+                position: "absolute",
+                color: "white",
+                top: 550,
+                marginLeft: 28,
+                fontSize: 16
+              }}
+            >
+              First,choose your pain level by tapping on it
+            </Text>
+          </>
+        )}
       </View>
     );
   }
