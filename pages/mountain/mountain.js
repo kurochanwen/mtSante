@@ -18,7 +18,7 @@ export default class Mountain extends Component<Props> {
   componentDidMount = () => {
     setTimeout(() => {
       this._ScrollView.scrollToEnd({ animated: true });
-    }, 2000);
+    }, 100);
     setTimeout(() => {
       this.setState({ page: 2 });
     }, 4200);

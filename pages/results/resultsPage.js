@@ -99,13 +99,16 @@ export default class ResultsPage extends Component<Props> {
           <View>
             <Button
               style={styles.button}
-              onPress={() => this.props.navigation.navigate("GoalPage")}
+              onPress={() => this.props.navigation.navigate("DrawerHome")}
             >
               <Text style={styles.buttonText}>Back to today</Text>
             </Button>
 
-            <Button style={styles.button}>
-              <Text style={styles.buttonText}>Back to menu</Text>
+            <Button
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate("Tabs")}
+            >
+              <Text style={styles.buttonText}>Back to home</Text>
             </Button>
           </View>
         </View>
