@@ -114,35 +114,27 @@ export default class BookingMap extends Component<Props> {
     <View
       style={{
         position: "absolute",
-        left: 42,
-        top: 40
+        left: 34,
+        top: 70
       }}
     >
       <Image
         style={{
-          width: 296,
+          width: 320,
           height: 623
         }}
-        source={require("../../assets/stock-photo/agenda.jpg")}
+        source={require("../../assets/stock-photo/agenda.png")}
         resizeMode={"contain"}
-      />
-      <Image
-        style={{
-          top: -42,
-          width: 296,
-          height: 129
-        }}
-        source={require("../../assets/stock-photo/agenda2.jpg")}
       />
 
       <View
         style={{
-          top: -320,
-          left: 45,
+          top: -395,
+          left: 60,
           width: 243,
           height: 51,
           backgroundColor: "rgba(146,208,236,1)",
-          borderRadius: 25,
+          borderRadius: 20,
           justifyContent: "center"
         }}
       >
@@ -160,7 +152,53 @@ export default class BookingMap extends Component<Props> {
               marginHorizontal: 20
             }}
           >
-            1:00~2:25 pm available
+            10:00~11:00 pm available
+          </Text>
+          <Button
+            style={{
+              height: 22,
+              backgroundColor: "rgba(225,225,225,.5)",
+              paddingTop: 0,
+              paddingBottom: 0,
+              paddingHorizontal: 18,
+              borderRadius: 25,
+              textAlign: "center"
+            }}
+            onPress={() => this.handleChangePage()}
+          >
+            <Text style={{ fontSize: 10, color: "rgba(127,130,132,1)" }}>
+              Book
+            </Text>
+          </Button>
+        </View>
+      </View>
+
+      <View
+        style={{
+          top: -250,
+          left: 60,
+          width: 243,
+          height: 51,
+          backgroundColor: "rgba(146,208,236,1)",
+          borderRadius: 20,
+          justifyContent: "center"
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <Text
+            style={{
+              ...styles.smallerText,
+              color: "white",
+              marginHorizontal: 20
+            }}
+          >
+            3:15~4:45 pm available
           </Text>
           <Button
             style={{
@@ -281,7 +319,7 @@ export default class BookingMap extends Component<Props> {
                   marginBottom: 20,
                   borderRadius: 10
                 }}
-                source={require("../../assets/stock-photo/calendar1.jpg")}
+                source={require("../../assets/ver5/May.png")}
               />
             </View>
 
@@ -291,7 +329,7 @@ export default class BookingMap extends Component<Props> {
                   style={{ ...styles.button }}
                   onPress={() =>
                     this.state.selected
-                      ? this.setState({ pageOpacity: 0.6 })
+                      ? this.setState({ pageOpacity: 0.8 })
                       : null
                   }
                 >
@@ -307,7 +345,7 @@ export default class BookingMap extends Component<Props> {
               height: 30,
               width: 30,
               borderRadius: 25,
-              bottom: 125,
+              bottom: 115,
               left: 175
             }}
             onPress={() => {
@@ -318,7 +356,7 @@ export default class BookingMap extends Component<Props> {
           />
         </View>
       </View>
-      {this.state.pageOpacity === 0.6 ? this.renderAgenda() : null}
+      {this.state.pageOpacity === 0.8 ? this.renderAgenda() : null}
     </View>
   );
 
