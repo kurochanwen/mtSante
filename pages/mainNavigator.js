@@ -27,8 +27,8 @@ import TransitionMap from "./transition/transitionMap";
 import TransitionAfterAgenda from "./transition/transitionAfterAgenda";
 import Mountain from "./mountain/mountain";
 import GoalPage from "./goalPage/goalPage";
-import GoalPage1 from "./goalPage/goalPage1";
 import GoalPage2 from "./goalPage/goalPage2";
+import GoalPage3 from "./goalPage/goalPage3";
 import AlarmPage from "./alarm/alarmPage";
 import ResultsPage from "./results/resultsPage";
 import ReviewSteps from "./review/reviewSteps";
@@ -198,7 +198,7 @@ const Tabs = createMaterialTopTabNavigator(
       }
     },
     Winter: {
-      screen: GoalPage1,
+      screen: GoalPage3,
       navigationOptions: {
         tabBarVisible: false
       }

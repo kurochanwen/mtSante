@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Button } from "native-base";
 
-export default class GoalPage1 extends Component<Props> {
+export default class GoalPage3 extends Component<Props> {
   state = {
     size: 20,
     page: 1
@@ -35,7 +35,37 @@ export default class GoalPage1 extends Component<Props> {
       </TouchableOpacity>
     </>
   );
-
+  pagination = () => (
+    <View
+      style={{
+        position: "absolute",
+        bottom: 20,
+        width: "100%",
+        alignItems: "center"
+      }}
+    >
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "10%"
+        }}
+      >
+        <Image
+          style={{ height: 7.5, width: 7.5 }}
+          source={require("../../assets/ver5/circlevoid.png")}
+        />
+        <Image
+          style={{ height: 7.5, width: 7.5 }}
+          source={require("../../assets/ver5/circlevoid.png")}
+        />
+        <Image
+          style={{ height: 7.5, width: 7.5 }}
+          source={require("../../assets/ver5/circle.png")}
+        />
+      </View>
+    </View>
+  );
   handleRenders = () => {
     switch (this.state.page) {
       case 1:
@@ -485,6 +515,7 @@ export default class GoalPage1 extends Component<Props> {
         <Text style={{ color: "white", fontSize: 10 }}>05/15</Text>
       </View>
       {this.state.size === 30 && this.renderBox()}
+      {this.pagination()}
     </>
   );
   render() {
