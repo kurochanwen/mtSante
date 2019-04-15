@@ -6,9 +6,11 @@ import {
   ImageBackground,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Button } from "native-base";
+import Video from "react-native-video";
 
 export default class GoalPage extends Component<Props> {
   state = {
@@ -175,7 +177,11 @@ export default class GoalPage extends Component<Props> {
             <View style={{ paddingTop: 40 }}>
               <Button
                 style={styles.button}
-                onPress={() => this.props.navigation.navigate("DrawerHome")}
+                onPress={() =>
+                  this.setState({ page: 1 }, () =>
+                    this.props.navigation.navigate("DrawerHome")
+                  )
+                }
               >
                 <Text style={styles.buttonText}>Done</Text>
               </Button>
@@ -191,25 +197,17 @@ export default class GoalPage extends Component<Props> {
 
   renderActualExercise = () => (
     <>
-      <ImageBackground
-        style={styles.imageBackground}
-        source={require("../../assets/ver5/Bspring.png")}
-        resizeMode={"contain"}
-      />
-      <Image
-        style={{ width: "100%", height: "100%" }}
-        source={require("../../assets/stock-photo/WeChatImage_20190206014817.png")}
-      />
-      <TouchableOpacity
-        style={{
-          position: "absolute",
-          height: 120,
-          width: 120,
-          bottom: 0,
-          right: 0
-        }}
-        onPress={() => this.nextPage()}
-      />
+      <TouchableWithoutFeedback onPress={() => this.nextPage()}>
+        <Video
+          source={require("../../assets/ver5/exercise.mp4")}
+          ref={ref => {
+            this.player = ref;
+          }}
+          onError={this.videoError}
+          style={styles.backgroundVideo}
+          onEnd={() => this.nextPage()}
+        />
+      </TouchableWithoutFeedback>
     </>
   );
 
@@ -251,62 +249,22 @@ export default class GoalPage extends Component<Props> {
       </View>
     </>
   );
+  videoError = () => {
+    console.warn("somethings wrong with the video!");
+  };
   renderExercise = () => (
     <>
-      <ImageBackground
-        style={styles.imageBackground}
-        source={require("../../assets/ver5/Bspring.png")}
-        resizeMode={"contain"}
-      />
-      <View
-        style={{
-          backgroundColor: "rgba(255,255,255,.5)",
-          height: "100%",
-          justifyContent: "center"
-        }}
-      >
-        <Text style={styles.topText}>
-          Follow the video down below, and try to feel the vibration from your
-          device
-        </Text>
-        <TouchableOpacity
-          style={styles.startExercise}
-          onPress={() => this.nextPage()}
-        >
-          <Image
-            style={styles.startExercisePic}
-            source={require("../../assets/stock-photo/WeChatImage_20190206014750.png")}
-          />
-        </TouchableOpacity>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center"
+      <TouchableWithoutFeedback onPress={() => this.nextPage()}>
+        <Video
+          source={require("../../assets/ver5/tutorial.mp4")}
+          ref={ref => {
+            this.player = ref;
           }}
-        >
-          <View
-            style={{
-              height: 40,
-              width: "50%",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "rgba(255,255,255,.5)"
-            }}
-          >
-            <Text style={styles.buttonBottom}>Can't feel the vibration?</Text>
-          </View>
-          <View
-            style={{
-              height: 40,
-              width: "50%",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <Text style={styles.buttonBottom}>Help</Text>
-          </View>
-        </View>
-      </View>
+          onError={this.videoError}
+          style={styles.backgroundVideo}
+          onEnd={() => this.nextPage()}
+        />
+      </TouchableWithoutFeedback>
     </>
   );
   renderStartTutorial = () => (
@@ -377,7 +335,10 @@ export default class GoalPage extends Component<Props> {
             </Button>
           </View>
           <View style={{ paddingTop: 10 }}>
-            <Button style={styles.button}>
+            <Button
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate("Alarm")}
+            >
               <Text style={styles.buttonText}>Set an Alarm</Text>
             </Button>
           </View>
@@ -640,5 +601,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10
+  },
+  backgroundVideo: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0
   }
 });

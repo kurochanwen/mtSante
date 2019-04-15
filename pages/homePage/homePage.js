@@ -21,14 +21,17 @@ export default class HomeScreen extends Component<Props> {
         <View style={{ top: "10%" }}>
           <Button
             style={styles.buttonSignUp}
-            onPress={() => this.props.navigation.navigate("SignUp")}
+            onPress={() => this.props.navigation.navigate("GenderPage")}
           >
             <Text style={styles.buttonText}>Sign up</Text>
           </Button>
         </View>
         <View style={{ top: "12%" }}>
-          <Button style={styles.buttonLogin}>
-            <Text style={styles.buttonText}>Log in</Text>
+          <Button
+            style={styles.buttonLogin}
+            onPress={() => this.props.navigation.navigate("Mountain")}
+          >
+            <Text style={styles.buttonText}>Returning User</Text>
           </Button>
         </View>
       </View>
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
   buttonLogin: {
     backgroundColor: "#FFFFFF",
     height: 40,
-    paddingHorizontal: 87,
+    paddingHorizontal: 50,
     borderRadius: 25,
     opacity: 0.5
   }

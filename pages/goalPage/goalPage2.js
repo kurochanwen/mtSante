@@ -6,9 +6,11 @@ import {
   ImageBackground,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Button } from "native-base";
+import Video from "react-native-video";
 
 export default class GoalPage2 extends Component<Props> {
   state = {
@@ -71,19 +73,19 @@ export default class GoalPage2 extends Component<Props> {
       case 1:
         return this.renderGoals();
         break;
+      // case 2:
+      //   return this.renderStartTutorial();
+      //   break;
+      // case 3:
+      //   return this.renderExercise();
+      //   break;
       case 2:
-        return this.renderStartTutorial();
-        break;
-      case 3:
-        return this.renderExercise();
-        break;
-      case 4:
         return this.renderClap();
         break;
-      case 5:
+      case 3:
         return this.renderActualExercise();
         break;
-      case 6:
+      case 4:
         return this.renderResult();
         break;
     }
@@ -175,7 +177,11 @@ export default class GoalPage2 extends Component<Props> {
             <View style={{ paddingTop: 40 }}>
               <Button
                 style={styles.button}
-                onPress={() => this.props.navigation.navigate("DrawerHome")}
+                onPress={() =>
+                  this.setState({ page: 1 }, () =>
+                    this.props.navigation.navigate("DrawerHome")
+                  )
+                }
               >
                 <Text style={styles.buttonText}>Done</Text>
               </Button>
@@ -191,25 +197,17 @@ export default class GoalPage2 extends Component<Props> {
 
   renderActualExercise = () => (
     <>
-      <ImageBackground
-        style={styles.imageBackground}
-        source={require("../../assets/ver5/Bdesert.png")}
-        resizeMode={"contain"}
-      />
-      <Image
-        style={{ width: "100%", height: "100%" }}
-        source={require("../../assets/stock-photo/WeChatImage_20190206014817.png")}
-      />
-      <TouchableOpacity
-        style={{
-          position: "absolute",
-          height: 120,
-          width: 120,
-          bottom: 0,
-          right: 0
-        }}
-        onPress={() => this.nextPage()}
-      />
+      <TouchableWithoutFeedback onPress={() => this.nextPage()}>
+        <Video
+          source={require("../../assets/ver5/exercise.mp4")}
+          ref={ref => {
+            this.player = ref;
+          }}
+          onError={this.videoError}
+          style={styles.backgroundVideo}
+          onEnd={() => this.nextPage()}
+        />
+      </TouchableWithoutFeedback>
     </>
   );
 
@@ -377,7 +375,10 @@ export default class GoalPage2 extends Component<Props> {
             </Button>
           </View>
           <View style={{ paddingTop: 10 }}>
-            <Button style={styles.button}>
+            <Button
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate("Alarm")}
+            >
               <Text style={styles.buttonText}>Set an Alarm</Text>
             </Button>
           </View>
@@ -615,5 +616,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10
+  },
+  backgroundVideo: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0
   }
 });

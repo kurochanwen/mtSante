@@ -162,11 +162,6 @@ export default class ReviewMain extends Component<Props> {
       </View>
       <View style={{ alignItems: "center", marginTop: 20 }}>
         <View>
-          <Button style={{ ...styles.button, paddingHorizontal: 15 }}>
-            <Text style={styles.buttonText}>Get it claimed</Text>
-          </Button>
-        </View>
-        <View style={{ marginTop: 10 }}>
           <Button
             style={styles.button}
             onPress={() => this.setState({ page: 1 })}

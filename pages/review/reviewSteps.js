@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
   Image,
   AsyncStorage,
-  TextInput
+  TextInput,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import { Button } from "native-base";
 
@@ -103,29 +106,32 @@ export default class ReviewSteps extends Component {
           source={require("../../assets/stock-photo/Supergood-physio-logos/twitter_header_photo_1.png")}
         />
         <Image style={styles.CommentIconHead} source={this.state.picture} />
-        <Text style={styles.welcome2}>
-          Leave some comments for {this.state.therapist}
-        </Text>
-        <View
-          style={{
-            top: -20,
-            width: 200,
-            height: 100,
-            borderRadius: 25,
-            padding: 10,
-            backgroundColor: "white"
-          }}
-        >
-          <TextInput
-            onChangeText={text => this.setState({ text })}
-            value={this.state.text}
-            editable={true}
-            multiline={true}
-            numberOfLines={5}
-            style={styles.buttonText}
-          />
-        </View>
-
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <Text style={styles.welcome2}>
+            Leave some comments for {this.state.therapist}
+          </Text>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View
+            style={{
+              top: -20,
+              width: 200,
+              height: 100,
+              borderRadius: 25,
+              padding: 10,
+              backgroundColor: "white"
+            }}
+          >
+            <TextInput
+              onChangeText={text => this.setState({ text })}
+              value={this.state.text}
+              editable={true}
+              multiline={true}
+              numberOfLines={5}
+              style={styles.buttonText}
+            />
+          </View>
+        </TouchableWithoutFeedback>
         <View style={{ top: -10 }}>
           <Button
             style={styles.button}

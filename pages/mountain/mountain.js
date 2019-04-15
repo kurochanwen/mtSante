@@ -6,16 +6,39 @@ import {
   ImageBackground,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from "react-native";
 import { Button } from "native-base";
 
 export default class Mountain extends Component<Props> {
   state = {
     blur: 0,
-    page: 1
+    page: 1,
+    picture: require("../../assets/human-figures/Mt.Sante-02shaw.png")
+  };
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("USERDATA");
+      if (value !== null) {
+        let user = JSON.parse(value);
+        if (user.gender === "male") {
+          this.setState({
+            picture: require("../../assets/human-figures/Mt.Sante-02shaw.png")
+          });
+        }
+        if (user.gender === "female") {
+          this.setState({
+            picture: require("../../assets/human-figures/Asset-3.png")
+          });
+        }
+      }
+    } catch (error) {
+      console.warn(error);
+    }
   };
   componentDidMount = () => {
+    this._retrieveData();
     setTimeout(() => {
       this._ScrollView.scrollToEnd({ animated: true });
     }, 100);
@@ -23,6 +46,7 @@ export default class Mountain extends Component<Props> {
       this.setState({ page: 2 });
     }, 4200);
   };
+
   renderTopMenu = () => (
     <>
       <TouchableOpacity
@@ -153,8 +177,8 @@ export default class Mountain extends Component<Props> {
               bottom: 50,
               left: 10
             }}
-            source={require("../../assets/human-figures/Mt.Sante-02shaw.png")}
-            blurRadius={this.state.blur}
+            resizeMode={"contain"}
+            source={this.state.picture}
           />
 
           {this.handlePage()}

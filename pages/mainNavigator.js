@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
-  AsyncStorage
+  AsyncStorage,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Container, Content, Header, Body, Icon } from "native-base";
 import {
@@ -31,8 +32,11 @@ import GoalPage2 from "./goalPage/goalPage2";
 import GoalPage3 from "./goalPage/goalPage3";
 import AlarmPage from "./alarm/alarmPage";
 import ResultsPage from "./results/resultsPage";
+import Charts from "./results/charts";
 import ReviewSteps from "./review/reviewSteps";
 import ReviewMain from "./review/reviewMain";
+import Device from "./device/device";
+import Request from "./sendRequest/sendRequest";
 
 class CustomDrawerContentComponent extends Component {
   state = {
@@ -96,36 +100,21 @@ class CustomDrawerContentComponent extends Component {
         >
           <Body>
             <Content>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  width: "90%",
-                  marginTop: 10
-                }}
+              <TouchableWithoutFeedback
+                onPress={() => this.props.navigation.navigate("Result")}
               >
-                <View>{this.showGender()}</View>
-                <View style={{ paddingHorizontal: 15, alignItems: "center" }}>
-                  <Text style={{ fontSize: 12, color: "#5C646A" }}>
-                    Next follow up in
-                  </Text>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text
-                      style={{
-                        paddingHorizontal: 15,
-                        fontSize: 16,
-                        fontWeight: "bold",
-                        color: "#5C646A"
-                      }}
-                    >
-                      7
-                    </Text>
-                    <Text style={{ fontSize: 8, color: "#5C646A" }}>days</Text>
-                  </View>
-
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    width: "90%",
+                    marginTop: 10
+                  }}
+                >
+                  <View>{this.showGender()}</View>
                   <View style={{ paddingHorizontal: 15, alignItems: "center" }}>
                     <Text style={{ fontSize: 12, color: "#5C646A" }}>
-                      Longest streak
+                      Next follow up in
                     </Text>
                     <View
                       style={{ flexDirection: "row", alignItems: "center" }}
@@ -144,30 +133,59 @@ class CustomDrawerContentComponent extends Component {
                         days
                       </Text>
                     </View>
-                  </View>
 
-                  <View style={{ paddingHorizontal: 15, alignItems: "center" }}>
-                    <Text style={{ fontSize: 12, color: "#5C646A" }}>
-                      Rent earned
-                    </Text>
                     <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
+                      style={{ paddingHorizontal: 15, alignItems: "center" }}
                     >
-                      <Text
-                        style={{
-                          paddingHorizontal: 15,
-                          fontSize: 16,
-                          fontWeight: "bold",
-                          color: "#5C646A"
-                        }}
-                      >
-                        15
+                      <Text style={{ fontSize: 12, color: "#5C646A" }}>
+                        Longest streak
                       </Text>
-                      <Text style={{ fontSize: 8, color: "#5C646A" }}>CAD</Text>
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <Text
+                          style={{
+                            paddingHorizontal: 15,
+                            fontSize: 16,
+                            fontWeight: "bold",
+                            color: "#5C646A"
+                          }}
+                        >
+                          7
+                        </Text>
+                        <Text style={{ fontSize: 8, color: "#5C646A" }}>
+                          days
+                        </Text>
+                      </View>
+                    </View>
+
+                    <View
+                      style={{ paddingHorizontal: 15, alignItems: "center" }}
+                    >
+                      <Text style={{ fontSize: 12, color: "#5C646A" }}>
+                        Rent earned
+                      </Text>
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <Text
+                          style={{
+                            paddingHorizontal: 15,
+                            fontSize: 16,
+                            fontWeight: "bold",
+                            color: "#5C646A"
+                          }}
+                        >
+                          15
+                        </Text>
+                        <Text style={{ fontSize: 8, color: "#5C646A" }}>
+                          CAD
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
+              </TouchableWithoutFeedback>
             </Content>
           </Body>
         </Header>
@@ -182,7 +200,25 @@ class CustomDrawerContentComponent extends Component {
     );
   };
 }
-
+//result tabs
+const ResultTabs = createMaterialTopTabNavigator(
+  {
+    ResultsPage: {
+      screen: ResultsPage,
+      navigationOptions: {
+        tabBarVisible: false
+      }
+    },
+    Charts: {
+      screen: Charts,
+      navigationOptions: {
+        tabBarVisible: false
+      }
+    }
+  },
+  { swipeEnabled: true, initialRouteName: "Charts" }
+);
+//season tabs
 const Tabs = createMaterialTopTabNavigator(
   {
     Spring: {
@@ -210,13 +246,18 @@ const Tabs = createMaterialTopTabNavigator(
 // Drawer Navigator
 const Drawer = createDrawerNavigator(
   {
-    Result: {
-      screen: ResultsPage,
+    Tabs: {
+      screen: Tabs,
       navigationOptions: {
-        drawerLabel: () => "Journey Overview"
+        drawerLabel: () => "Today's Goal"
       }
     },
-
+    Result: {
+      screen: ResultTabs,
+      navigationOptions: {
+        drawerLabel: () => null
+      }
+    },
     BookingMap: {
       screen: BookingMap,
       navigationOptions: {
@@ -229,22 +270,29 @@ const Drawer = createDrawerNavigator(
         drawerLabel: () => "Alarm/ Timer Set Up"
       }
     },
-    Tabs: {
-      screen: Tabs,
-      navigationOptions: {
-        drawerLabel: () => null
-      }
-    },
+
     ReviewHome: {
       screen: ReviewMain,
       navigationOptions: {
         drawerLabel: () => "Physiotherapy History"
       }
     },
+    Request: {
+      screen: Request,
+      navigationOptions: {
+        drawerLabel: () => "Send Request"
+      }
+    },
+    Device: {
+      screen: Device,
+      navigationOptions: {
+        drawerLabel: () => "My Device"
+      }
+    },
     DrawerHome: {
       screen: Mountain,
       navigationOptions: {
-        drawerLabel: () => "My Device"
+        drawerLabel: () => null
       }
     }
   },

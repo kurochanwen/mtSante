@@ -94,23 +94,11 @@ export default class ResultsPage extends Component<Props> {
           <Text style={styles.text}> days till the next follow up </Text>
         </View>
 
-        <View style={{ alignItems: "center", paddingTop: 60 }}>
-          <Text style={{ ...styles.text, marginBottom: 20 }}>Keep up!</Text>
-          <View>
-            <Button
-              style={styles.button}
-              onPress={() => this.props.navigation.navigate("DrawerHome")}
-            >
-              <Text style={styles.buttonText}>Back to today</Text>
-            </Button>
-
-            <Button
-              style={styles.button}
-              onPress={() => this.props.navigation.navigate("Tabs")}
-            >
-              <Text style={styles.buttonText}>Back to home</Text>
-            </Button>
-          </View>
+        <View style={{ alignItems: "center", paddingTop: 120 }}>
+          <Text style={{ ...styles.text }}>Keep up!</Text>
+          <Text style={{ ...styles.text, marginTop: 250 }}>
+            Swipe to see more in detail
+          </Text>
         </View>
       </View>
     </>
