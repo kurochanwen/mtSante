@@ -430,15 +430,62 @@ export default class GoalPage3 extends Component<Props> {
               <Text style={styles.buttonText}>Set an Alarm</Text>
             </Button>
           </View>
-          <Text
-            style={{
-              ...styles.buttonText,
-              paddingTop: 10,
-              textDecorationLine: "underline"
-            }}
-          >
-            Not Now
-          </Text>
+          <TouchableOpacity onPress={() => this.setState({ size: 20 })}>
+            <Text
+              style={{
+                ...styles.buttonText,
+                paddingTop: 10,
+                textDecorationLine: "underline"
+              }}
+            >
+              Not Now
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </>
+  );
+
+  handleLockOpening = () => {
+    if (this.state.size === 20) {
+      this.setState({ lock: true });
+    }
+  };
+
+  renderLocks = () => (
+    <>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 400,
+          left: 10,
+          width: 174,
+          height: 205,
+          backgroundColor: "rgba(255,255,255,.9)",
+          borderRadius: 20,
+          alignItems: "center",
+          padding: 20
+        }}
+      >
+        <Text
+          style={{ ...styles.buttonText, paddingTop: 20, textAlign: "center" }}
+        >
+          Finish today's goal to unlock future tasks.
+        </Text>
+
+        <View style={{ alignItems: "center" }}>
+          <View style={{ paddingTop: 30 }}>
+            <Button
+              style={{
+                ...styles.button,
+                paddingHorizontal: 10,
+                width: 142
+              }}
+              onPress={() => this.setState({ size: 30, lock: false })}
+            >
+              <Text style={styles.buttonText}>see today's goal</Text>
+            </Button>
+          </View>
         </View>
       </View>
     </>
@@ -460,15 +507,10 @@ export default class GoalPage3 extends Component<Props> {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity
-          style={{ ...styles.painOuter, borderColor: "#F67676" }}
-        >
-          <View
-            style={{
-              ...styles.painInner,
-
-              backgroundColor: "#F67676"
-            }}
+        <TouchableOpacity onPress={() => this.handleLockOpening()}>
+          <Image
+            style={{ height: 30, width: 30 }}
+            source={require("../../assets/ver6/lock.png")}
           />
         </TouchableOpacity>
         <Text style={{ color: "white", fontSize: 10 }}>05/11</Text>
@@ -482,15 +524,10 @@ export default class GoalPage3 extends Component<Props> {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity
-          style={{ ...styles.painOuter, borderColor: "#F67676" }}
-        >
-          <View
-            style={{
-              ...styles.painInner,
-
-              backgroundColor: "#F67676"
-            }}
+        <TouchableOpacity onPress={() => this.handleLockOpening()}>
+          <Image
+            style={{ height: 30, width: 30 }}
+            source={require("../../assets/ver6/lock.png")}
           />
         </TouchableOpacity>
         <Text style={{ color: "white", fontSize: 10 }}>05/12</Text>
@@ -504,15 +541,10 @@ export default class GoalPage3 extends Component<Props> {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity
-          style={{ ...styles.painOuter, borderColor: "#F67676" }}
-        >
-          <View
-            style={{
-              ...styles.painInner,
-
-              backgroundColor: "#F67676"
-            }}
+        <TouchableOpacity onPress={() => this.handleLockOpening()}>
+          <Image
+            style={{ height: 30, width: 30 }}
+            source={require("../../assets/ver6/lock.png")}
           />
         </TouchableOpacity>
         <Text style={{ color: "white", fontSize: 10 }}>05/13</Text>
@@ -526,15 +558,10 @@ export default class GoalPage3 extends Component<Props> {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity
-          style={{ ...styles.painOuter, borderColor: "#F67676" }}
-        >
-          <View
-            style={{
-              ...styles.painInner,
-
-              backgroundColor: "#F67676"
-            }}
+        <TouchableOpacity onPress={() => this.handleLockOpening()}>
+          <Image
+            style={{ height: 30, width: 30 }}
+            source={require("../../assets/ver6/lock.png")}
           />
         </TouchableOpacity>
         <Text style={{ color: "white", fontSize: 10 }}>05/14</Text>
@@ -550,7 +577,7 @@ export default class GoalPage3 extends Component<Props> {
       >
         <TouchableOpacity
           style={{ ...styles.painOuter, borderColor: "#F67676" }}
-          onPress={() => this.setState({ size: 30 })}
+          onPress={() => this.setState({ size: 30, lock: false })}
         >
           <View
             style={{
@@ -564,6 +591,7 @@ export default class GoalPage3 extends Component<Props> {
         <Text style={{ color: "white", fontSize: 10 }}>05/15</Text>
       </View>
       {this.state.size === 30 && this.renderBox()}
+      {this.state.lock && this.renderLocks()}
       {this.pagination()}
     </>
   );
@@ -591,7 +619,8 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "white",
     height: 40,
-    paddingHorizontal: 35,
+    width: 142,
+    justifyContent: "center",
     borderRadius: 25
   },
   buttonText: {

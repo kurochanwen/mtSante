@@ -243,7 +243,7 @@ const Tabs = createMaterialTopTabNavigator(
   { swipeEnabled: true, initialRouteName: "Spring" }
 );
 
-// Drawer Navigator
+// Drawer Navigator for the side Menu
 const Drawer = createDrawerNavigator(
   {
     Tabs: {
